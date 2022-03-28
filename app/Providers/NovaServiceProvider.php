@@ -7,6 +7,7 @@ use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
+
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
     /**
@@ -42,9 +43,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function gate()
     {
         Gate::define('viewNova', function ($user) {
-            return in_array($user->email, [
-                //
-            ]);
+            return in_array("admin", $user->roles) || in_array("manager", $user->roles);
         });
     }
 
@@ -56,7 +55,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            new Help,
+            new \App\Nova\Cards\Report
         ];
     }
 
