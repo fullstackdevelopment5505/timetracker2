@@ -12,9 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('timesheet');
 });
 
 Route::get('admin_login', function() {
@@ -31,3 +30,13 @@ Route::get('user_login', function() {
     auth()->loginUsingId(3);
     return redirect('/');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('timesheet', 'App\Http\Controllers\TimesheetController');
+    Route::get('/export', "App\Http\Controllers\HomeController@export");
+});
+
